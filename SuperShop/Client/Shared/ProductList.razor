@@ -1,0 +1,36 @@
+﻿@*@inherits ProductListBase*@
+@inject HttpClient Http
+
+<h3>Browse our selection!</h3>
+
+<br />
+
+<div class="row g-4">
+    @foreach (var product in Products)
+    {
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card">
+                <img src="@product.ImageUrl" class="card-img-top" alt="@product.ImageUrl">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Title</h5>
+                    <p class="card-text">@product.Description</p>
+                    <p class="card-text">Price: £@product.Price</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    protected static List<Product> Products { get; set; } = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<List<Product>>("api/Product");
+        if (result != null)
+        {
+            Products = result;
+        }
+    }
+}
